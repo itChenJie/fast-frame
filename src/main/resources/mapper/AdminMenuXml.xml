@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.AdminMenuMapper">
+
+    <!-- 开启二级缓存 -->
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.entity.AdminMenu">
+        <id column="menu_id" property="menuId" />
+        <result column="name" property="name" />
+        <result column="pid" property="pid" />
+        <result column="url" property="url" />
+        <result column="perms" property="perms" />
+        <result column="type" property="type" />
+        <result column="icon" property="icon" />
+        <result column="num" property="num" />
+        <result column="role" property="role"/>
+        <result column="create_user_id" property="createUserId" />
+        <result column="update_user_id" property="updateUserId" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        menu_id, name, pid, url, perms, type, icon, num, create_user_id, update_user_id, create_time, update_time
+    </sql>
+
+    <select id="findAllByRole" resultType="com.entity.AdminMenu">
+        select m.* from admin_menu m LEFT JOIN admin_role_menu r ON m.menu_id = r.menu_id WHERE r.role_id=${roleId}
+    </select>
+
+    <select id="findAllParentRole" resultType="java.lang.String">
+        SELECT T2.role,T2.menu_id
+            FROM (
+                SELECT
+                @r AS _id,
+                (SELECT @r := pid FROM admin_role_menu WHERE menu_id = _id) AS pid,
+                @l := @l + 1 AS lvl
+                FROM
+                (SELECT @r :=${roleId}, @l := 0) vars,
+                admin_role_menu h
+                WHERE @r != 0 ) T1
+        JOIN admin_role_menu T2 ON T1._id = T2.menu_id
+        ORDER BY T1.lvl DESC
+    </select>
+
+</mapper>

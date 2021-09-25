@@ -1,0 +1,79 @@
+spring:
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://127.0.0.1:3306/fast_oms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    password:
+    timeout: 7000ms # 连接超时时长（毫秒）
+    jedis:
+      pool:
+        max-active: 200  # 连接池最大连接数（使用负值表示没有限制）
+        max-wait: -1ms # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-idle: 10 # 连接池最大空闲连接
+        min-idle: 5  # 连接池最小空闲连接
+
+#spring.main.allow-bean-definition-overriding: true
+#  #显示sql
+#spring.shardingsphere.props.sql.show: true
+#
+#  #配置数据源
+#spring.shardingsphere.datasource.names: ds1
+#
+#  #master-ds1数据库连接信息
+#spring.shardingsphere.datasource.ds1.type: com.alibaba.druid.pool.DruidDataSource
+#spring.shardingsphere.datasource.ds1.driver-class-name: com.mysql.cj.jdbc.Driver
+#spring.shardingsphere.datasource.ds1.url: jdbc:mysql://127.0.0.1:3306/fast_oms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+#spring.shardingsphere.datasource.ds1.username: root
+#spring.shardingsphere.datasource.ds1.password: root
+#spring.shardingsphere.datasource.ds1.maxPoolSize: 100
+#spring.shardingsphere.datasource.ds1.minPoolSize: 5
+
+  #slave-ds2数据库连接信息
+#spring.shardingsphere.datasource.ds2.type: com.alibaba.druid.pool.DruidDataSource
+#spring.shardingsphere.datasource.ds2.driver-class-name: com.mysql.cj.jdbc.Driver
+#spring.shardingsphere.datasource.ds2.url: jdbc:mysql://127.0.0.1:3306/fast_oms2?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+#spring.shardingsphere.datasource.ds2.username: root
+#spring.shardingsphere.datasource.ds2.password: root
+#spring.shardingsphere.datasource.ds2.maxPoolSize: 100
+#spring.shardingsphere.datasource.ds2.minPoolSize: 5
+
+  #slave-ds3数据库连接信息
+#spring.shardingsphere.datasource.ds3.type: com.alibaba.druid.pool.DruidDataSource
+#spring.shardingsphere.datasource.ds3.driver-class-name: com.mysql.cj.jdbc.Driver
+#spring.shardingsphere.datasource.ds3.url: jdbc:mysql://127.0.0.1:3306/fast_oms3?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+#spring.shardingsphere.datasource.ds3.username: root
+#spring.shardingsphere.datasource.ds3.password: root
+#spring.shardingsphere.datasource.ds3.maxPoolSize: 100
+#spring.shardingsphere.datasource.ds3.minPoolSize: 5
+
+  #配置默认数据源ds1 默认数据源,主要用于写
+#spring.shardingsphere.sharding.default-data-source-name: ds1
+  #配置主从名称
+#spring.shardingsphere.masterslave.name: ms
+  #置主库master,负责数据的写入
+#spring.shardingsphere.masterslave.master-data-source-name: ds1
+  #配置从库slave节点
+#spring.shardingsphere.masterslave.slave-data-source-names: ds2,ds3
+  #配置slave节点的负载均衡均衡策略,采用轮询机制
+#spring.shardingsphere.masterslave.load-balance-algorithm-type: round_robin
+
+  #整合mybatis的配置
+#mybatis.type-aliases-package: com.entity
+#
+#spring.shardingsphere.sharding.tables.admin_user.actual-data-nodes: ds1.admin_user·$->{0..1}
+##数据源分片策略
+#spring.shardingsphere.sharding.tables.admin_user.database-strategy.inline.sharding-column: sex
+##数据源分片算法
+#spring.shardingsphere.sharding.tables.admin_user.database-strategy.inline.algorithm-expression: ds1
+##表分片策略
+#spring.shardingsphere.sharding.tables.admin_user.table-strategy.inline.sharding-column: sex
+##表分片算法
+#spring.shardingsphere.sharding.tables.admin_user.table-strategy.inline.algorithm-expression: admin_user$->{sex%2}
+##主键的列名
+#spring.shardingsphere.sharding.tables.admin_user.key-generator.column: user_id
+#spring.shardingsphere.sharding.tables.admin_user.key-generator.type: SNOWFLAKE
