@@ -5,6 +5,7 @@ import com.common.base.BaseUtil;
 import com.admin.entity.AdminUser;
 import com.utils.RedisUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.basis.framework.error.BizCodeEnume;
 import org.basis.framework.error.UnauthorizedException;
@@ -54,6 +55,10 @@ public class InjectTokenUserInterceptor extends HandlerInterceptorAdapter {
             throw new UnauthorizedException("请先登陆！",BizCodeEnume.USER_UN_LOGIN.getCode());
         }
         AdminUser adminUser = redisUtils.get(token, AdminUser.class);
+        if (adminUser==null){
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            throw new UnauthorizedException("请重新登陆！",BizCodeEnume.USER_UN_LOGIN.getCode());
+        }
         BaseUtil.setUser(adminUser);
         return true;
     }

@@ -113,6 +113,7 @@ public class AdminUserController {
             @ApiImplicitParam(required = true,name = "userId",value = "员工id",dataTypeClass = Long.class),
             @ApiImplicitParam(required = true,name = "passWord",value = "新密码",dataTypeClass = String.class),
     })
+    @IgnoreSecurity
     @PostMapping("/resetPassWord")
     public R resetPassWord(@NotNull(message = "员工id不能为空")Long userId, @NotBlank(message = "新密码不能为空")String passWord){
         adminUserService.resetPassWord(userId,passWord);

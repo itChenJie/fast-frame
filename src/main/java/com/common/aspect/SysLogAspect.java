@@ -1,5 +1,6 @@
 package com.common.aspect;
 
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -8,9 +9,11 @@ import org.springframework.stereotype.Component;
 
 /**
  * @Description
+ *  系统日志收集
  * @Author ChenWenJie
  * @Data 2021/7/6 5:05 下午
  **/
+@Slf4j
 @Aspect
 @Component
 public class SysLogAspect {
@@ -28,6 +31,6 @@ public class SysLogAspect {
     }
 
     private void saveSysLog(ProceedingJoinPoint point, long time) {
-
+        log.info("system log record：{}");
     }
 }
