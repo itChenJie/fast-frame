@@ -1,6 +1,7 @@
 package com.admin.controller;
 
 
+import com.admin.enums.UserStatusEnum;
 import com.common.annotation.IgnoreSecurity;
 import com.admin.entity.AdminUser;
 import com.admin.service.IAdminUserService;
@@ -10,6 +11,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.basis.framework.page.PageUtils;
 import org.basis.framework.utils.R;
+import org.basis.framework.validation.group.UpdateGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -46,13 +48,14 @@ public class AdminUserController {
 
     @ApiOperation("新增用户信息")
     @PostMapping("/add")
-    public void addAdminUser(@RequestBody AdminUser adminUser) {
+    public R addAdminUser(@Validated @RequestBody AdminUser adminUser) {
         adminUserService.addAdminUser(adminUser);
+        return R.ok();
     }
 
     @ApiOperation("更新用户信息")
     @PostMapping("/update")
-    public R updateAdminUser(AdminUser adminUser){
+    public R updateAdminUser(@Validated(UpdateGroup.class) @RequestBody AdminUser adminUser){
         adminUserService.updateAdminUser(adminUser);
         return R.ok();
     }
@@ -61,6 +64,17 @@ public class AdminUserController {
     @PostMapping("/delete")
     public R deleteAdminUser(@RequestBody Long[] ids) throws InterruptedException {
         adminUserService.deleteAdminUser(Arrays.asList(ids));
+        return R.ok();
+    }
+
+    @ApiOperation("更新用户状态")
+    @PostMapping("/updateUserStatus")
+    @ApiImplicitParams({
+            @ApiImplicitParam(required = true,name = "userId",value = "员工id",dataTypeClass = Long.class),
+            @ApiImplicitParam(required = true,name = "status",value = "状态,0禁用,1正常,2未激活,3离职 ",dataTypeClass = Integer.class)
+    })
+    public R updateUserStatus(@NotNull(message = "员工id不能为空")Long userId,@NotNull(message = "员工状态不能为空") Integer status){
+        adminUserService.updateUserStatus(userId,UserStatusEnum.of(status));
         return R.ok();
     }
 

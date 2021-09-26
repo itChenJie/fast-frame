@@ -2,19 +2,21 @@ package com.admin.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.extra.servlet.ServletUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.admin.dao.AdminUserMapper;
 import com.admin.entity.AdminDept;
 import com.admin.entity.AdminRole;
 import com.admin.entity.AdminUser;
+import com.admin.enums.UserStatusEnum;
 import com.admin.service.IAdminDeptService;
 import com.admin.service.IAdminRoleService;
 import com.admin.service.IAdminUserService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.utils.HttpContextUtils;
 import com.utils.RedisUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.basis.framework.error.RRException;
 import org.basis.framework.page.PageUtils;
 import org.basis.framework.page.Query;
 import org.basis.framework.utils.MD5Util;
@@ -25,7 +27,10 @@ import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * 用户 服务实现类
@@ -65,15 +70,14 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
     }
 
     @Override
-    public R addAdminUser(AdminUser adminUser) {
-        List<AdminUser> adminUsers = adminUserMapper.findByAccount(adminUser.getAccount());
+    public void addAdminUser(AdminUser adminUser) {
+        List<AdminUser> adminUsers = adminUserMapper.selectList(new QueryWrapper<AdminUser>().eq("account",adminUser.getAccount()));
         if (CollectionUtil.isNotEmpty(adminUsers)){
-            return R.error("帐户已存在！");
+            throw new RRException("帐户已存在！");
         }
         adminUser.setPassWord(MD5Util.sign(adminUser.getUserName().trim()+adminUser.getPassWord().trim()
                 ,adminUser.getPassWord().trim()));
         save(adminUser);
-        return R.ok();
     }
 
     @Override
@@ -84,6 +88,11 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
     @Override
     public void deleteAdminUser(Collection<? extends Serializable> idList) {
         removeByIds(idList);
+    }
+
+    @Override
+    public void updateUserStatus(Long userId, UserStatusEnum userStatus) {
+        adminUserMapper.updateStatusByUserId(userId,userStatus.getValue());
     }
 
     @Override

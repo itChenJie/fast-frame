@@ -16,4 +16,6 @@ import java.util.List;
 public interface AdminUserMapper extends BaseMapper<AdminUser> {
 
    List<AdminUser> findByAccount(String account);
+
+   void updateStatusByUserId(Long userId,Integer status);
 }

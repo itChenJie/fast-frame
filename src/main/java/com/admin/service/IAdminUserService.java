@@ -1,5 +1,6 @@
 package com.admin.service;
 
+import com.admin.enums.UserStatusEnum;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.admin.entity.AdminUser;
@@ -29,7 +30,7 @@ public interface IAdminUserService extends IService<AdminUser> {
     * 添加
     * @param adminUser
     */
-    R addAdminUser(AdminUser adminUser);
+    void addAdminUser(AdminUser adminUser);
 
     /**
     * 更新
@@ -43,6 +44,12 @@ public interface IAdminUserService extends IService<AdminUser> {
     */
     void deleteAdminUser(Collection<? extends Serializable> idList);
 
+    /**
+     * 更新用户状态
+     * @param userId
+     * @param userStatus
+     */
+    void updateUserStatus(Long userId, UserStatusEnum userStatus);
     /**
     * id查询
     * @param id

@@ -1,5 +1,6 @@
 package com.admin.entity;
 
+import com.admin.enums.UserStatusEnum;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -8,7 +9,9 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.basis.framework.entity.BaseEntity;
+import org.basis.framework.validation.group.UpdateGroup;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -31,28 +34,32 @@ public class AdminUser  extends BaseEntity implements Serializable {
 
 
     @TableId(value = "user_id", type = IdType.INPUT)
+    @NotNull(message = "账号id不能为空",groups = UpdateGroup.class)
     private Long userId;
 
-    @ApiModelProperty(value = "帐户")
-    @NotNull
+    @ApiModelProperty(value = "帐户",required = true)
+    @NotBlank(message = "账号不能为空")
     private String account;
 
     @ApiModelProperty(value = "密码",required = true)
-    @NotNull
+    @NotBlank(message = "密码不能为空")
     @TableField("pass_word")
     private String passWord;
 
     @ApiModelProperty(value = "状态,0禁用,1正常,2未激活,3离职")
-    private Integer status;
+    @TableField("status")
+    private UserStatusEnum status;
 
-    @ApiModelProperty(value = "手机号")
+    @ApiModelProperty(value = "手机号",required = true)
     private String mobile;
 
-    @ApiModelProperty(value = "用户姓名")
+    @ApiModelProperty(value = "用户姓名",required = true)
+    @NotBlank(message = "用户姓名不能为空")
     @TableField("user_name")
     private String userName;
 
-    @ApiModelProperty(value = "性别 1 男 0女")
+    @ApiModelProperty(value = "性别 1 男 0女",required = true)
+    @NotNull(message = "性别不能为空")
     private Integer sex;
 
     @ApiModelProperty(value = "部门id")
