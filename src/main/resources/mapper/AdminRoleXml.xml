@@ -5,7 +5,7 @@
     <!-- 开启二级缓存 -->
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.entity.AdminRole">
+    <resultMap id="BaseResultMap" type="com.admin.entity.AdminRole">
         <id column="role_id" property="roleId" />
         <result column="name" property="name" />
         <result column="remark" property="remark" />
@@ -20,7 +20,7 @@
         role_id, name, remark, create_user_id, update_user_id, create_time, update_time
     </sql>
 
-    <select id="findAllByUserId" resultType="com.entity.AdminRole">
+    <select id="findAllByUserId" resultType="com.admin.entity.AdminRole">
         select r.* from admin_role r LEFT JOIN admin_user_role us ON us.role_id = r.role_id WHERE us.user_id=${userId}
     </select>
 

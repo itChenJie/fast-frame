@@ -63,7 +63,7 @@ spring:
 #spring.shardingsphere.masterslave.load-balance-algorithm-type: round_robin
 
   #整合mybatis的配置
-#mybatis.type-aliases-package: com.entity
+#mybatis.type-aliases-package: com.admin.entity
 #
 #spring.shardingsphere.sharding.tables.admin_user.actual-data-nodes: ds1.admin_user·$->{0..1}
 ##数据源分片策略

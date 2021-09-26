@@ -2,13 +2,12 @@ package com.common.interceptor;
 
 import com.common.annotation.IgnoreSecurity;
 import com.common.base.BaseUtil;
-import com.entity.AdminUser;
+import com.admin.entity.AdminUser;
 import com.utils.RedisUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.basis.framework.error.BizCodeEnume;
 import org.basis.framework.error.UnauthorizedException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
@@ -40,7 +39,7 @@ public class InjectTokenUserInterceptor extends HandlerInterceptorAdapter {
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         Method method = handlerMethod.getMethod();
         String requestPath = request.getRequestURI();
-        if (requestPath.contains("/v3/api-docs") || requestPath.contains("/swagger-resources")) {
+        if (requestPath.contains("/v2/api-docs") || requestPath.contains("/v3/api-docs") || requestPath.contains("/swagger-resources")) {
             return true;
         }
         if (requestPath.contains("/error")) {

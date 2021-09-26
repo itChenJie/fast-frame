@@ -1,7 +1,7 @@
 package com.common.base;
 
 import com.common.converter.AdminUserChannelLoginUser;
-import com.entity.AdminUser;
+import com.admin.entity.AdminUser;
 import org.basis.framework.base.AbstractBaseUtil;
 import org.basis.framework.security.LoginUser;
 

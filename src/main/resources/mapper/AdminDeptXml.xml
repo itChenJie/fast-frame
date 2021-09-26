@@ -5,7 +5,7 @@
     <!-- 开启二级缓存 -->
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.entity.AdminDept">
+    <resultMap id="BaseResultMap" type="com.admin.entity.AdminDept">
         <id column="dept_id" property="deptId" />
         <result column="pid" property="pid" />
         <result column="name" property="name" />

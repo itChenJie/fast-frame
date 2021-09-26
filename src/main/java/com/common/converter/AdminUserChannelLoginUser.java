@@ -1,11 +1,9 @@
 package com.common.converter;
 
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.util.ObjectUtil;
-import com.entity.AdminDept;
-import com.entity.AdminMenu;
-import com.entity.AdminRole;
-import com.entity.AdminUser;
+import com.admin.entity.AdminMenu;
+import com.admin.entity.AdminRole;
+import com.admin.entity.AdminUser;
 import org.basis.framework.security.LoginUser;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

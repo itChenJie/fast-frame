@@ -5,7 +5,7 @@
     <!-- 开启二级缓存 -->
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.entity.AdminMenu">
+    <resultMap id="BaseResultMap" type="com.admin.entity.AdminMenu">
         <id column="menu_id" property="menuId" />
         <result column="name" property="name" />
         <result column="pid" property="pid" />
@@ -26,7 +26,7 @@
         menu_id, name, pid, url, perms, type, icon, num, create_user_id, update_user_id, create_time, update_time
     </sql>
 
-    <select id="findAllByRole" resultType="com.entity.AdminMenu">
+    <select id="findAllByRole" resultType="com.admin.entity.AdminMenu">
         select m.* from admin_menu m LEFT JOIN admin_role_menu r ON m.menu_id = r.menu_id WHERE r.role_id=${roleId}
     </select>
 

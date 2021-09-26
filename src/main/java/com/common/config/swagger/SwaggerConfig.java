@@ -1,10 +1,14 @@
 package com.common.config.swagger;
 
+import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
+import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -23,11 +27,15 @@ import java.util.List;
 
 /**
  * @Description
+ * 通过ConditionalOnProperty 来控制Configuration是否生效
  * @Author ChenWenJie
  * @Data 2021/7/2 5:56 下午
  **/
 @EnableSwagger2
 @Configuration
+@EnableKnife4j
+@Import(BeanValidatorPluginsConfiguration.class)
+@ConditionalOnProperty(value = {"knife4j.enable"}, matchIfMissing = true)
 public class SwaggerConfig {
     @Autowired
     private Environment environment;
@@ -48,19 +56,31 @@ public class SwaggerConfig {
      * 本例采用指定扫描的包路径来定义指定要建立API的目录。
      * @return
      */
-    @Bean
-    public Docket createRestApi() {
-        return new Docket(DocumentationType.OAS_30)
+    @Bean(value = "adminApi")
+    public Docket adminApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
                 .enable(swaggerShow)
                 .apiInfo(apiInfo())
-                .groupName("1.0版本")
+                .groupName("后台API分组")
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.admin.controller"))
                 .paths(PathSelectors.any())
                 .build()
                 .globalRequestParameters(getGlobalRequestParameters());
     }
 
+    @Bean(value = "indexApi")
+    public Docket indexApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .enable(swaggerShow)
+                .apiInfo(apiInfo())
+                .groupName("前端API分组")
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.user.controller"))
+                .paths(PathSelectors.any())
+                .build()
+                .globalRequestParameters(getGlobalRequestParameters());
+    }
     /**
      * 配置全局请求参数
      * @return

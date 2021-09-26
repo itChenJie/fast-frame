@@ -38,7 +38,7 @@ import java.util.stream.Stream;
 public class WebLogAspect {
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Pointcut("execution(public * com.controller.*.*(..))")
+    @Pointcut("execution(public * com.*.controller.*.*(..))")
     public void webLog() {
     }
 
