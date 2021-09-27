@@ -18,9 +18,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class SysLogAspect {
     @Pointcut(value = "@annotation(com.common.annotation.SysLog)")
-    private void logPointCut(){}
+    private void sysLogPointCut(){}
 
-    @Around("logPointCut()")
+    @Around("sysLogPointCut()")
     public Object around(ProceedingJoinPoint point) throws Throwable {
         long beginTime = System.currentTimeMillis();
         Object result = point.proceed();

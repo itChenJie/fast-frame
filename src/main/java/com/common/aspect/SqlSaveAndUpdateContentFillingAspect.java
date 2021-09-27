@@ -18,7 +18,7 @@ import java.util.Date;
  **/
 @Aspect
 @Component
-public class SqlSaveAndUpdateContentExpandAspect {
+public class SqlSaveAndUpdateContentFillingAspect {
     @Pointcut("execution(* com.baomidou.mybatisplus.core.mapper.BaseMapper.insert(..))")
     private void savePointCut(){}
 
@@ -27,24 +27,23 @@ public class SqlSaveAndUpdateContentExpandAspect {
 
     @Before("savePointCut()")
     public void doBefore(JoinPoint joinPoint){
-        Object[] args = joinPoint.getArgs();
-        if (args!=null){
-            if (args[0] instanceof BaseEntity) {
-                BaseEntity baseEntity = (BaseEntity) args[0];
-                baseEntity.setCreateUserId(BaseUtil.getUserId());
-                baseEntity.setCreateTime(new Date());
-            }
-        }
+        filling(joinPoint);
     }
 
     @Before("updatePointCut()")
     public void doUpdateBefore(JoinPoint joinPoint){
+        filling(joinPoint);
+    }
+
+    private void filling(JoinPoint joinPoint) {
         Object[] args = joinPoint.getArgs();
         if (args!=null){
-            if (args[0] instanceof BaseEntity) {
-                BaseEntity baseEntity = (BaseEntity) args[0];
-                baseEntity.setUpdateUserId(BaseUtil.getUserId());
-                baseEntity.setUpdateTime(new Date());
+            for (Object arg : args) {
+                if (arg instanceof BaseEntity) {
+                    BaseEntity baseEntity = (BaseEntity) arg;
+                    baseEntity.setCreateUserId(BaseUtil.getUserId());
+                    baseEntity.setCreateTime(new Date());
+                }
             }
         }
     }

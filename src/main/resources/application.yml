@@ -24,3 +24,5 @@ mybatis-plus:
 knife4j:
   enable: true
 
+logging:
+  config: classpath:logback.xml

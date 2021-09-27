@@ -1,11 +1,10 @@
 package com.common.interceptor;
 
+import com.admin.entity.AdminUser;
 import com.common.annotation.IgnoreSecurity;
 import com.common.base.BaseUtil;
-import com.admin.entity.AdminUser;
 import com.utils.RedisUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.basis.framework.error.BizCodeEnume;
 import org.basis.framework.error.UnauthorizedException;
