@@ -2,9 +2,9 @@ package com.common.interceptor;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.alibaba.fastjson.JSONObject;
-import com.common.annotation.Permissions;
 import com.common.base.BaseUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.basis.framework.annotation.Permissions;
 import org.basis.framework.utils.R;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.method.HandlerMethod;

@@ -1,15 +1,15 @@
 package com.admin.controller;
 
 
-import com.admin.enums.UserStatusEnum;
-import com.common.annotation.IgnoreSecurity;
 import com.admin.entity.AdminUser;
+import com.admin.enums.UserStatusEnum;
 import com.admin.service.IAdminUserService;
-import com.common.annotation.Permissions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.basis.framework.annotation.IgnoreSecurity;
+import org.basis.framework.annotation.Permissions;
 import org.basis.framework.page.PageUtils;
 import org.basis.framework.utils.R;
 import org.basis.framework.validation.group.UpdateGroup;
