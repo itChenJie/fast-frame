@@ -107,15 +107,16 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
 
     @Override
     public R login(String account, String passWord) {
-        Optional<AdminUser> adminUser = adminUserMapper.findByAccount(account).stream().findFirst();
-        if (!adminUser.isPresent()){
+        Optional<AdminUser> adminUserOptional = adminUserMapper.findByAccount(account).stream().findFirst();
+        if (!adminUserOptional.isPresent()){
             return R.error("帐户不存在！");
         }
-        String redisKey = MD5Util.sign(String.valueOf(adminUser.get().getUserId()), account);
+        AdminUser adminUser = adminUserOptional.get();
+        String redisKey = MD5Util.sign(String.valueOf(adminUser.getUserId()), account);
         String redisValue= redisUtils.get(redisKey);
         redisValue = StringUtils.isEmpty(redisValue)?"0":redisValue;
         String sign = MD5Util.sign(account.trim() + passWord.trim(), passWord);
-        if (Integer.valueOf(redisValue)<5 &&!sign.equals(adminUser.get().getPassWord())){
+        if (Integer.valueOf(redisValue)<5 &&!sign.equals(adminUser.getPassWord())){
             redisUtils.set(redisKey,Integer.valueOf(redisValue)+1,300);
             return R.error("密码错误！");
         }else if(Integer.valueOf(redisValue)==5){
@@ -123,10 +124,11 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
             return R.error("账号已被锁5分钟后再操作！");
         }
         String token = TokenGenerator.generateValue();
-        redisUtils.set(token,adminUser.get(),LOGINEXPIRE);
-        adminUser.get().setLastLoginIp(ServletUtil.getClientIP(HttpContextUtils.getHttpServletRequest()));
-        adminUser.get().setLastLoginTime(LocalDateTime.now());
-        updateAdminUser(adminUser.get());
+        adminUser.setLastLoginIp(ServletUtil.getClientIP(HttpContextUtils.getHttpServletRequest()));
+        adminUser.setLastLoginTime(LocalDateTime.now());
+        updateAdminUser(adminUser);
+        adminUser.setAdminRoles(adminRoleService.findAllByUserId(adminUser.getUserId()));
+        redisUtils.set(token,adminUser,LOGINEXPIRE);
         return R.ok().put("token",token);
     }
 

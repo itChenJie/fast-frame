@@ -1,5 +1,6 @@
 package com.admin.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.admin.entity.AdminMenu;
 import com.admin.entity.AdminRole;
 import com.admin.dao.AdminRoleMapper;
@@ -67,7 +68,13 @@ public class AdminRoleServiceImpl extends ServiceImpl<AdminRoleMapper, AdminRole
     }
 
     @Override
-    public List<AdminRole> findAllByUserId(Long userId) {
-        return adminRoleMapper.findAllByUserId(userId);
+    public List<AdminRole>  findAllByUserId(Long userId) {
+        List<AdminRole> adminRoles = adminRoleMapper.findAllByUserId(userId);
+        if (CollectionUtil.isNotEmpty(adminRoles)){
+            for (AdminRole adminRole : adminRoles) {
+                adminRole.setAdminMenus(adminMenuService.findAllByRole(adminRole.getRoleId()));
+            }
+        }
+        return adminRoles;
     }
 }

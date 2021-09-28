@@ -5,6 +5,7 @@ import com.admin.enums.UserStatusEnum;
 import com.common.annotation.IgnoreSecurity;
 import com.admin.entity.AdminUser;
 import com.admin.service.IAdminUserService;
+import com.common.annotation.Permissions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -41,6 +42,7 @@ public class AdminUserController {
             @ApiImplicitParam(paramType="query", name = "limit", value = "limit",dataTypeClass=Integer.class)
     })
     @PostMapping("/list")
+    @Permissions("user:list")
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = adminUserService.queryPage(params);
         return R.ok().put("page", page);

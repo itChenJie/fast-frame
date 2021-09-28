@@ -3,13 +3,13 @@ package com.common.interceptor;
 import com.admin.entity.AdminUser;
 import com.common.annotation.IgnoreSecurity;
 import com.common.base.BaseUtil;
+import com.common.util.SpringContextUtil;
 import com.utils.RedisUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.basis.framework.error.BizCodeEnume;
 import org.basis.framework.error.UnauthorizedException;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -24,16 +24,16 @@ import java.lang.reflect.Method;
  * @Data 2021/8/6 5:55 下午
  **/
 @Slf4j
-@Component
 public class InjectTokenUserInterceptor extends HandlerInterceptorAdapter {
     private RedisUtils redisUtils;
-    public InjectTokenUserInterceptor(RedisUtils redisUtils){
-        this.redisUtils = redisUtils;
+    public InjectTokenUserInterceptor(){
+        this.redisUtils = SpringContextUtil.getBean(RedisUtils.class);
     }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        if (!(handler instanceof HandlerMethod)) {
+        if (!(handler instanceof HandlerMethod)
+                ||(handler instanceof org.springframework.web.servlet.resource.ResourceHttpRequestHandler)) {
             return true;
         }
         HandlerMethod handlerMethod = (HandlerMethod) handler;
