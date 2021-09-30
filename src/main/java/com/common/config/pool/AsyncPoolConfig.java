@@ -15,6 +15,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @Description
+ *  异步池配置
  * @Author ChenWenJie
  * @Data 2021/7/8 11:07 上午
  **/
@@ -49,8 +50,7 @@ public class AsyncPoolConfig implements AsyncConfigurer {
         @Override
         public void handleUncaughtException(Throwable throwable, Method method, Object... objects) {
             throwable.printStackTrace();
-            log.error("AsyncError:{},Method:{},Param:{}",
-                    throwable.getMessage(),method.getName(),
+            log.error("AsyncError:{},Method:{},Param:{}", throwable.getMessage(),method.getName(),
                     JSON.toJSONString(objects));
             //TODO 发送邮件或短信，做进一步的处理
         }
