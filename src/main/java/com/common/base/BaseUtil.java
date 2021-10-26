@@ -12,6 +12,10 @@ import org.basis.framework.security.LoginUser;
  **/
 public class BaseUtil extends AbstractBaseUtil {
 
+    /**
+     * 设置当前线程登陆人员
+     * @param adminUser
+     */
     public static void setUser(AdminUser adminUser) {
         LoginUser loginUser = AdminUserChannelLoginUser.INSTANCE.adminUserToLoginUser(adminUser);
         setUser(loginUser);

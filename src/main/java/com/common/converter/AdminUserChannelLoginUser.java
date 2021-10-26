@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 /**
  * @Description
+ * AdminUser 转换成 LoginUser
  * @Author ChenWenJie
  * @Data 2021/9/24 11:09 上午
  **/

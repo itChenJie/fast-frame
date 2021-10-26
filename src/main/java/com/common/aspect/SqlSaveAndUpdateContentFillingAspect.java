@@ -12,7 +12,8 @@ import java.util.Date;
 
 /**
  * @Description
- *  新增、更新sql 切面注入创建人、更新人、创建时间、更新时间
+ *  新增、更新sql
+ *  切面注入：创建人、更新人、创建时间、更新时间
  * @Author ChenWenJie
  * @Data 2021/9/26 4:42 下午
  **/
@@ -27,15 +28,19 @@ public class SqlSaveAndUpdateContentFillingAspect {
 
     @Before("savePointCut()")
     public void doBefore(JoinPoint joinPoint){
-        filling(joinPoint);
+        saveFilling(joinPoint);
     }
 
     @Before("updatePointCut()")
     public void doUpdateBefore(JoinPoint joinPoint){
-        filling(joinPoint);
+        updateFilling(joinPoint);
     }
 
-    private void filling(JoinPoint joinPoint) {
+    /**
+     * 新增sql 填充创建人、创建时间
+     * @param joinPoint
+     */
+    private void saveFilling(JoinPoint joinPoint) {
         Object[] args = joinPoint.getArgs();
         if (args!=null){
             for (Object arg : args) {
@@ -43,6 +48,23 @@ public class SqlSaveAndUpdateContentFillingAspect {
                     BaseEntity baseEntity = (BaseEntity) arg;
                     baseEntity.setCreateUserId(BaseUtil.getUserId());
                     baseEntity.setCreateTime(new Date());
+                }
+            }
+        }
+    }
+
+    /**
+     * 更新sql填充 更新人、更新时间
+     * @param joinPoint
+     */
+    private void updateFilling(JoinPoint joinPoint) {
+        Object[] args = joinPoint.getArgs();
+        if (args!=null){
+            for (Object arg : args) {
+                if (arg instanceof BaseEntity) {
+                    BaseEntity baseEntity = (BaseEntity) arg;
+                    baseEntity.setUpdateUserId(BaseUtil.getUserId());
+                    baseEntity.setUpdateTime(new Date());
                 }
             }
         }

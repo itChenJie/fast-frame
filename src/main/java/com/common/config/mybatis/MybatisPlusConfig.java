@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * @Description
+ * Mybatis-Plus配置类
  * @Author ChenWenJie
  * @Data 2021/9/25 5:34 下午
  **/
@@ -16,6 +17,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 public class MybatisPlusConfig {
 
+    /**
+     * 分页拦截器
+     * @return
+     */
     @Bean
     public PaginationInterceptor paginationInterceptor() {
         PaginationInterceptor paginationInterceptor = new PaginationInterceptor();

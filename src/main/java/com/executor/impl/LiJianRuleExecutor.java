@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * @Description
+ * 立减规则执行器
  * @Author ChenWenJie
  * @Data 2021/7/9 2:38 下午
  **/

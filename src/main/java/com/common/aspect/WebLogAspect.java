@@ -61,7 +61,7 @@ public class WebLogAspect {
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) requestAttributes;
         HttpServletRequest request = servletRequestAttributes.getRequest();
-        //这一步获取到的方法有可能是代理方法也有可能是真实方法
+        //获取对应方法
         Method m = ((MethodSignature) joinPoint.getSignature()).getMethod();
         //判断代理对象本身是否是连接点所在的目标对象，不是的话就要通过反射重新获取真实方法
         if (joinPoint.getThis().getClass() != joinPoint.getTarget().getClass()) {
@@ -70,18 +70,14 @@ public class WebLogAspect {
         //通过真实方法获取该方法的参数名称
         LocalVariableTableParameterNameDiscoverer paramNames = new LocalVariableTableParameterNameDiscoverer();
         String[] parameterNames = paramNames.getParameterNames(m);
-        //获取连接点方法运行时的入参列表
         Object[] args = joinPoint.getArgs();
-        //将参数名称与入参值一一对应起来
         Map<String, Object> params = new HashMap<>();
-        //自己写的一个判空类方法
         if (parameterNames!=null){
             for (int i = 0; i < parameterNames.length; i++) {
-                //这里加一个判断，如果使用requestParam接受参数，加了require=false，这里会存现不存在的现象
+                //如果使用requestParam接受参数，加了require=false，这里会存现不存在的现象 TODO
                 if (ObjectUtils.isEmpty(args[i])){
                     continue;
                 }
-                //通过所在类转换，获取值，包含各种封装类都可以
                 ObjectMapper objectMapper = new ObjectMapper();
                 objectMapper.convertValue(args[i],args[i].getClass());
                 params.put(parameterNames[i],JSON.toJSON(objectMapper.convertValue(args[i],args[i].getClass())));
@@ -92,7 +88,6 @@ public class WebLogAspect {
         logger.info("http_method : " + request.getMethod());
         logger.info("ip : " + request.getRemoteAddr());
         logger.info("class_method : " + joinPoint.getSignature().getDeclaringTypeName()+ "." + joinPoint.getSignature().getName());
-        //这里经过处理，就可以获得参数名字与值一一对应
         logger.info("args-json : " + params);
     }
 

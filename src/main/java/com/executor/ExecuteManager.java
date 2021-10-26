@@ -25,6 +25,12 @@ public class ExecuteManager implements BeanPostProcessor {
             switch (ruleDto.getRuleFlag()){
                 case LIJIAN:
                     executorIndex.get(ruleDto.getRuleFlag()).executor(ruleDtos);
+                case ZHEKOU:
+                    executorIndex.get(ruleDto.getRuleFlag()).executor(ruleDtos);
+                case MANJIAN:
+                    executorIndex.get(ruleDto.getRuleFlag()).executor(ruleDtos);
+                default:
+                    throw new RRException("Not currently supported, this kind of rule ！"+ruleDto.getRuleFlag());
             }
         }
     }

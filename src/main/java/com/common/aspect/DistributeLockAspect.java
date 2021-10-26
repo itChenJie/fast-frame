@@ -85,7 +85,7 @@ public class DistributeLockAspect {
 
     /**
      * 获取锁的key name
-     * @param distributeLock
+     * @param distributeLock 分发锁注解
      * @param joinPoint
      * @return
      */
