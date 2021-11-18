@@ -4,6 +4,7 @@ import cn.hutool.core.util.ReflectUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.catalina.connector.ResponseFacade;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -20,6 +21,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -75,7 +77,9 @@ public class WebLogAspect {
         if (parameterNames!=null){
             for (int i = 0; i < parameterNames.length; i++) {
                 //如果使用requestParam接受参数，加了require=false，这里会存现不存在的现象 TODO
-                if (ObjectUtils.isEmpty(args[i])){
+                if (ObjectUtils.isEmpty(args[i])
+                        || (args[i] instanceof HttpServletResponse)
+                        || (args[i] instanceof HttpServletRequest)){
                     continue;
                 }
                 ObjectMapper objectMapper = new ObjectMapper();

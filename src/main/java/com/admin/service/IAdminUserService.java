@@ -89,4 +89,10 @@ public interface IAdminUserService extends IService<AdminUser> {
      * @return
      */
     void resetPassWord(Long userId,String passWord);
+
+    /**
+     * 退出登陆
+     * @param token
+     */
+    void logout(String token);
 }

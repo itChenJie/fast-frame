@@ -1,11 +1,13 @@
 package com.admin.enums;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -39,6 +41,14 @@ public enum UserStatusEnum {
                 .orElseThrow(() -> new IllegalArgumentException(code + " not exists"));
     }
 
+    @JsonCreator
+    public static UserStatusEnum valueOf(final Integer value) {
+        return Optional.ofNullable(value)
+                .flatMap(it -> Stream.of(values())
+                        .filter(it2 -> it2.value == value)
+                        .findFirst()).orElse(null);
+    }
+
     public static Integer getValueBykey(String key){
         UserStatusEnum[] applicationStateEnums = values();
         for (UserStatusEnum itemEnum : applicationStateEnums) {
@@ -61,6 +71,8 @@ public enum UserStatusEnum {
 
     @Override
     public String toString() {
-        return this.getKey();
+        return String.valueOf(this.getValue());
     }
+
+
 }

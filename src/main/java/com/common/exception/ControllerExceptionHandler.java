@@ -31,7 +31,6 @@ public class ControllerExceptionHandler extends DefinitionExceptionHandler {
      * @return
      */
     @ExceptionHandler({ConstraintViolationException.class})
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     public R constraintViolationException(ConstraintViolationException e){
         Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();

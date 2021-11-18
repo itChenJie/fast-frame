@@ -2,6 +2,8 @@ server:
   port: 8080
   application:
     name: fast-frame
+  servlet:
+    context-path: /fast-frame
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
@@ -11,6 +13,7 @@ mybatis-plus:
     cache-enabled: false
     call-setters-on-nulls: true
     jdbc-type-for-null: 'null'
+    # 默认枚举类型处理程序
     default-enum-type-handler: org.apache.ibatis.type.EnumOrdinalTypeHandler
   global-config:
     db-config:

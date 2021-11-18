@@ -15,10 +15,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.basis.framework.page.PageUtils;
 import org.basis.framework.page.Query;
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 角色 服务实现类
@@ -68,13 +66,44 @@ public class AdminRoleServiceImpl extends ServiceImpl<AdminRoleMapper, AdminRole
     }
 
     @Override
-    public List<AdminRole>  findAllByUserId(Long userId) {
+    public List<AdminRole> findAllByUserId(Long userId) {
+        return findAllByUserId(userId,false);
+    }
+
+    /**
+     * 查询员工id下的角色
+     * @param userId
+     * @param isMenus  是否查询菜单
+     * @return
+     */
+    @Override
+    public List<AdminRole>  findAllByUserId(Long userId,boolean isMenus) {
         List<AdminRole> adminRoles = adminRoleMapper.findAllByUserId(userId);
         if (CollectionUtil.isNotEmpty(adminRoles)){
             for (AdminRole adminRole : adminRoles) {
-                adminRole.setAdminMenus(adminMenuService.findAllByRole(adminRole.getRoleId()));
+                if (isMenus){
+                    adminRole.setAdminMenus(adminMenuService.findAllByRole(adminRole.getRoleId()));
+                }
             }
         }
         return adminRoles;
     }
+
+    /**
+     * 获取用户权限列表
+     *
+     * @param userId
+     * @return
+     */
+    @Override
+    public Set<String> getUserPermissions(Long userId) {
+        List<AdminRole> adminRoles = findAllByUserId(userId,true);
+        Set<AdminMenu> menuSet = new HashSet<>();
+        for (AdminRole adminRole : adminRoles) {
+            menuSet.addAll(adminRole.getAdminMenus());
+        }
+        Set<String> permissions = menuSet.stream().map(item -> item.getPerms()).collect(Collectors.toSet());
+        return permissions;
+    }
+
 }

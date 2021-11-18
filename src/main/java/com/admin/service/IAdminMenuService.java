@@ -38,7 +38,7 @@ public interface IAdminMenuService extends IService<AdminMenu> {
     * 删除
     * @param idList
     */
-    void deleteAdminMenu(Collection<? extends Serializable> idList);
+    void deleteAdminMenu(List<Integer> idList);
 
     /**
     * id查询
@@ -53,4 +53,32 @@ public interface IAdminMenuService extends IService<AdminMenu> {
      * @return
      */
     List<AdminMenu> findAllByRole(Integer roleId);
+
+    /**
+     * 查询员工菜单
+     * @param userId
+     * @return
+     */
+    List<AdminMenu> getUserMenuList(Long userId);
+
+    /**
+     * 获取所有菜单列表
+     * @param menuIdList
+     * @return
+     */
+    List<AdminMenu> getAllMenuList(List<Long> menuIdList);
+
+    /**
+     * 查询列表父 ID
+     * @param parentId
+     * @param menuIdList
+     * @return
+     */
+    List<AdminMenu> queryListParentId(Integer parentId, List<Long> menuIdList);
+
+    /**
+     * 查找非按钮列表
+     * @return
+     */
+    List<AdminMenu> findNotButtonList();
 }

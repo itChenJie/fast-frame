@@ -1,6 +1,7 @@
 package com.admin.service.impl;
 
 import com.Application;
+import com.admin.enums.UserStatusEnum;
 import com.common.config.pool.AsyncPoolConfig;
 import com.admin.entity.AdminUser;
 import com.admin.service.IAdminUserService;
@@ -39,14 +40,18 @@ public class AdminUserServiceImplTest {
     @Test
     public void addAdminUser() {
         adminUserService.addAdminUser(AdminUser.builder()
-                .userId(1234560l)
-                .account("1507015844")
+                .account("15070158444")
                 .userName("陈1111")
                 .passWord("111")
                 .sex(1)
+                .status(UserStatusEnum.NORMAL)
                 .build());
+    }
 
-
+    @Test
+    public void findById(){
+        AdminUser adminUser = adminUserService.findById(1234561l);
+        System.out.println(adminUser);
     }
 
 

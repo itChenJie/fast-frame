@@ -1,10 +1,13 @@
 package com.admin.entity;
 
 import com.admin.enums.UserStatusEnum;
+import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.common.config.serializer.EnumSerializer;
+import com.common.config.serializer.UserStatusDeserializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -46,6 +49,7 @@ public class AdminUser  extends BaseEntity implements Serializable {
     @TableField("pass_word")
     private String passWord;
 
+    @JSONField(serializeUsing = EnumSerializer.class,deserializeUsing = UserStatusDeserializer.class)
     @ApiModelProperty(value = "状态,0禁用,1正常,2未激活,3离职")
     @TableField("status")
     private UserStatusEnum status;

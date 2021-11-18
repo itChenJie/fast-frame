@@ -1,14 +1,21 @@
 package com.admin.entity;
 
+import com.admin.enums.MenuType;
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.common.config.serializer.EnumSerializer;
+import com.common.config.serializer.MenuTypeDeserializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.basis.framework.entity.BaseEntity;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 菜单
@@ -41,8 +48,9 @@ public class AdminMenu  extends BaseEntity implements Serializable {
     @ApiModelProperty(value = "授权 (多个用逗号分隔，如：user:list,user:create)")
     private String perms;
 
+    @JSONField(serializeUsing = EnumSerializer.class,deserializeUsing = MenuTypeDeserializer.class)
     @ApiModelProperty(value = "类型 0：目录 1：菜单 2：按钮")
-    private Integer type;
+    private MenuType type;
 
     @ApiModelProperty(value = "图标")
     private String icon;
@@ -52,4 +60,13 @@ public class AdminMenu  extends BaseEntity implements Serializable {
 
     @ApiModelProperty(value = "权限")
     private String role;
+
+    /**
+     * ztree属性
+     */
+    @TableField(exist=false)
+    private Boolean open;
+
+    @TableField(exist=false)
+    private List<?> list;
 }

@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 角色 服务类
@@ -47,10 +48,19 @@ public interface IAdminRoleService extends IService<AdminRole> {
     */
     AdminRole findById(Integer id);
 
+    List<AdminRole> findAllByUserId(Long userId);
     /**
      * 查询员工id下的角色
      * @param userId
+     * @param isMenus
      * @return
      */
-    List<AdminRole> findAllByUserId(Long userId);
+    List<AdminRole> findAllByUserId(Long userId,boolean isMenus);
+
+    /**
+     * 获取用户权限列表
+     * @param userId
+     * @return
+     */
+    Set<String> getUserPermissions(Long userId);
 }

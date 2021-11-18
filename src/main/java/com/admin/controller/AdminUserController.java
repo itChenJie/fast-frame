@@ -4,10 +4,12 @@ package com.admin.controller;
 import com.admin.entity.AdminUser;
 import com.admin.enums.UserStatusEnum;
 import com.admin.service.IAdminUserService;
+import com.common.base.AbstractController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.basis.framework.annotation.IgnoreSecurity;
 import org.basis.framework.annotation.Permissions;
 import org.basis.framework.page.PageUtils;
@@ -32,7 +34,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/adminUser")
 @Validated
-public class AdminUserController {
+public class AdminUserController extends AbstractController {
     @Autowired
     IAdminUserService adminUserService;
 
@@ -64,7 +66,7 @@ public class AdminUserController {
 
     @ApiOperation("删除用户信息")
     @PostMapping("/delete")
-    public R deleteAdminUser(@RequestBody Long[] ids) throws InterruptedException {
+    public R deleteAdminUser(@RequestBody Long[] ids){
         adminUserService.deleteAdminUser(Arrays.asList(ids));
         return R.ok();
     }
@@ -87,27 +89,24 @@ public class AdminUserController {
         return R.ok().put("data",adminUserService.findById(id));
     }
 
-    @ApiOperation("登陆")
-    @ApiImplicitParams({
-            @ApiImplicitParam(required = true,name = "account",value = "账号",dataTypeClass = String.class),
-            @ApiImplicitParam(required = true,name = "passWord",value = "密码",dataTypeClass = String.class)
-    })
-    @PostMapping("/login")
-    @IgnoreSecurity
-    public R login(@NotNull(message = "账号不能为空") String account,@NotNull(message = "密码不能为空") String passWord){
-        return adminUserService.login(account, passWord);
+    /**
+     * 获取登录的用户信息
+     */
+    @ApiOperation("获取登录的用户信息")
+    @GetMapping("/info")
+    public R info(){
+        return R.ok().put("user", getUser());
     }
+
 
     @ApiOperation("更新密码")
     @ApiImplicitParams({
-            @ApiImplicitParam(required = true,name = "account",value = "账号",dataTypeClass = String.class),
             @ApiImplicitParam(required = true,name = "oldPassWord",value = "旧密码",dataTypeClass = String.class),
             @ApiImplicitParam(required = true,name = "newPassWord",value = "新密码",dataTypeClass = String.class)
     })
     @PostMapping("/updatePassWord")
-    public R updatePassWord(@NotBlank(message = "账号不能为空") String account,@NotBlank(message = "旧密码不能为空") String oldPassWord
-            ,@NotNull(message = "新密码不能为空") String newPassWord){
-        return adminUserService.updatePassWord(account, oldPassWord, newPassWord);
+    public R updatePassWord(@NotBlank(message = "旧密码不能为空") String oldPassWord,@NotNull(message = "新密码不能为空") String newPassWord){
+        return adminUserService.updatePassWord(getUser().getAccount(), oldPassWord, newPassWord);
     }
 
     @ApiOperation("重置密码")

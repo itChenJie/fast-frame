@@ -13,6 +13,7 @@ import com.admin.service.IAdminUserService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.common.base.BaseUtil;
 import com.utils.HttpContextUtils;
 import com.utils.RedisUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -112,6 +113,9 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
             return R.error("帐户不存在！");
         }
         AdminUser adminUser = adminUserOptional.get();
+        if (UserStatusEnum.Disable.equals(adminUser.getStatus()) || UserStatusEnum.RESIGN.equals(adminUser.getStatus())){
+            return R.error(String.format("账号已%s",adminUser.getStatus().getKey()));
+        }
         String redisKey = MD5Util.sign(String.valueOf(adminUser.getUserId()), account);
         String redisValue= redisUtils.get(redisKey);
         redisValue = StringUtils.isEmpty(redisValue)?"0":redisValue;
@@ -127,7 +131,7 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
         adminUser.setLastLoginIp(ServletUtil.getClientIP(HttpContextUtils.getHttpServletRequest()));
         adminUser.setLastLoginTime(LocalDateTime.now());
         updateAdminUser(adminUser);
-        adminUser.setAdminRoles(adminRoleService.findAllByUserId(adminUser.getUserId()));
+        adminUser.setAdminRoles(adminRoleService.findAllByUserId(adminUser.getUserId(),true));
         redisUtils.set(token,adminUser,LOGINEXPIRE);
         return R.ok().put("token",token);
     }
@@ -154,4 +158,13 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
         adminUserMapper.updateById(adminUser);
     }
 
+    /**
+     * 退出登陆
+     *
+     * @param token
+     */
+    @Override
+    public void logout(String token) {
+        redisUtils.delete(token);
+    }
 }

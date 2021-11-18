@@ -35,14 +35,36 @@
             FROM (
                 SELECT
                 @r AS _id,
-                (SELECT @r := pid FROM admin_role_menu WHERE menu_id = _id) AS pid,
+                (SELECT @r := pid FROM admin_menu WHERE menu_id = _id) AS pid,
                 @l := @l + 1 AS lvl
                 FROM
                 (SELECT @r :=${roleId}, @l := 0) vars,
-                admin_role_menu h
+                    admin_menu h
                 WHERE @r != 0 ) T1
-        JOIN admin_role_menu T2 ON T1._id = T2.menu_id
+        JOIN admin_menu T2 ON T1._id = T2.menu_id
         ORDER BY T1.lvl DESC
+    </select>
+
+    <select id="findUserMenuIds" resultType="java.lang.Long">
+        select distinct rm.menu_id from admin_user_role r
+         LEFT JOIN admin_role_menu rm on r.role_id = rm.role_id
+        where r.user_id = #{userId}
+    </select>
+
+    <select id="queryListParentId" resultType="com.admin.entity.AdminMenu">
+        select * from admin_menu where  pid = #{parentId}
+
+    </select>
+
+    <select id="findNotButtonList" resultType="com.admin.entity.AdminMenu">
+        select * from admin_menu where type !=2
+    </select>
+    <select id="queryListParentIds" resultType="com.admin.entity.AdminMenu">
+        select * from admin_menu where  pid in
+        <foreach collection="parentIds" item="item" index="index"
+                 open="(" close=")" separator=",">
+            #{item}
+        </foreach>
     </select>
 
 </mapper>
