@@ -10,6 +10,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.basis.framework.annotation.DistributeLock;
 import org.basis.framework.error.RRException;
+import org.basis.framework.utils.SnowFlakeUtils;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,7 @@ public class DistributeLockAspect {
         Method method = signature.getMethod();
         DistributeLock distributeLock = method.getAnnotation(DistributeLock.class);
         String lockKey=getLockKeyName(distributeLock,joinPoint);
+        // 默认过期时间是30秒
         RLock rLock=redissonClient.getLock(lockKey);
         boolean b=getLock(rLock,distributeLock);
         try {
@@ -98,7 +100,6 @@ public class DistributeLockAspect {
             Object[] args = joinPoint.getArgs();
             ukString = args[distributeLock.lockFiled()].toString();
         }
-
         if (StringUtils.isNotBlank(keyPrefix)&&StringUtils.isNotBlank(businessCode)){
             keyName = keyPrefix+":"+businessCode;
         }else if (StringUtils.isNotBlank(keyPrefix)){
@@ -111,7 +112,7 @@ public class DistributeLockAspect {
             keyName = name+methodName;
         }
         if (StringUtils.isNotBlank(ukString)){
-            CollectionUtil.join(Arrays.asList(keyName, ukString),":");
+            CollectionUtil.join(Arrays.asList(keyName, ukString,SnowFlakeUtils.nextId()),":");
         }
         return keyName;
     }

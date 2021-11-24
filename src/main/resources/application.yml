@@ -29,3 +29,4 @@ knife4j:
 
 logging:
   config: classpath:logback.xml
+weblogPath: ./logs/info.log
