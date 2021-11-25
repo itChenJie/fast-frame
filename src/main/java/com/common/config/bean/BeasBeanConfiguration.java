@@ -3,17 +3,19 @@ package com.common.config.bean;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import com.common.log.FileLoggerEventHandler;
+import com.common.log.LoggerEventHandler;
 import com.common.util.SpringContextUtil;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.google.code.kaptcha.util.Config;
+import org.basis.framework.log.LoggerDisruptorQueue;
+import org.basis.framework.log.ProcessLogAppender;
 import org.basis.framework.message.bean.MessageAccount;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.stereotype.Component;
 
 import java.util.Properties;
 
@@ -34,9 +36,7 @@ public class BeasBeanConfiguration {
      */
     @Bean
     public MessageAccount messageAccount(){
-        return MessageAccount.builder()
-                .password(mailPassword)
-                .account(mailUsername).build();
+        return MessageAccount.builder().password(mailPassword).account(mailUsername).build();
     }
 
     /**
@@ -78,5 +78,27 @@ public class BeasBeanConfiguration {
         fastConverter.setFastJsonConfig(fastJsonConfig);
         HttpMessageConverter<?> converter = fastConverter;
         return new HttpMessageConverters(converter);
+    }
+
+    /**
+     * 日志监听队列
+     * @return
+     */
+    @Bean
+    public LoggerDisruptorQueue loggerDisruptorQueue(){
+        LoggerEventHandler loggerEventHandler = SpringContextUtil.createBean(LoggerEventHandler.class, SpringContextUtil.AutoType.AUTOWIRE_BY_TYPE);
+        FileLoggerEventHandler fileLoggerEventHandler = SpringContextUtil.createBean(FileLoggerEventHandler.class, SpringContextUtil.AutoType.AUTOWIRE_BY_TYPE);
+        return new LoggerDisruptorQueue(loggerEventHandler,fileLoggerEventHandler);
+    }
+
+    /**
+     * 控制台日志处理bean
+     * @return
+     */
+    @Bean
+    public ProcessLogAppender processLogAppender(){
+        ProcessLogAppender logAppender = new ProcessLogAppender();
+        logAppender.init("CONSOLE");
+        return logAppender;
     }
 }

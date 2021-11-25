@@ -83,7 +83,7 @@ public class AdminUserController extends AbstractController {
     }
 
 
-    @ApiOperation("根据id查询")
+    @ApiOperation(value = "根据id查询",response = AdminUser.class)
     @PostMapping("/findById")
     public R findById(Long id){
         return R.ok().put("data",adminUserService.findById(id));

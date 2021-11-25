@@ -1,5 +1,6 @@
 package com.common.log;
 
+import org.basis.framework.log.LoggerDisruptorQueue;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
