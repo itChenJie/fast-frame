@@ -48,4 +48,7 @@ public class AdminDept extends BaseTimeEntity  implements Serializable {
     @ApiModelProperty(value = "员工")
     @TableField(exist = false)
     private List<AdminUser> adminUsers;
+
+    @TableField(exist=false)
+    private List<?> list;
 }

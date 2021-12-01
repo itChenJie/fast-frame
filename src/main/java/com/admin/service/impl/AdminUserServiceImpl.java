@@ -115,6 +115,8 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
         AdminUser adminUser = adminUserOptional.get();
         if (UserStatusEnum.Disable.equals(adminUser.getStatus()) || UserStatusEnum.RESIGN.equals(adminUser.getStatus())){
             return R.error(String.format("账号已%s",adminUser.getStatus().getKey()));
+        }else if (adminUser.getStatus().equals(UserStatusEnum.INACTIVATED)){
+            adminUser.setStatus(UserStatusEnum.NORMAL);
         }
         String redisKey = MD5Util.sign(String.valueOf(adminUser.getUserId()), account);
         String redisValue= redisUtils.get(redisKey);

@@ -3,8 +3,10 @@ package com.admin.service;
 import com.admin.entity.AdminDept;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.basis.framework.page.PageUtils;
+
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -45,4 +47,10 @@ public interface IAdminDeptService extends IService<AdminDept> {
     * @return
     */
     AdminDept findById(Integer id);
+
+    /**
+     * 查询部门树
+     * @return
+     */
+    List<AdminDept> findDeptTreeList();
 }

@@ -1,6 +1,8 @@
 package com.admin.controller;
 
 
+import com.admin.entity.AdminMenu;
+import com.admin.enums.MenuType;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -12,6 +14,7 @@ import com.admin.entity.AdminDept;
 import org.basis.framework.page.PageUtils;
 import org.basis.framework.utils.R;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -77,5 +80,19 @@ public class AdminDeptController {
     @PostMapping("/findById")
     public R findById(Integer id){
         return R.ok().put("data",adminDeptService.findById(id));
+    }
+
+    @ApiOperation("选择部门(添加、修改部门)")
+    @GetMapping("/select")
+    public R select(){
+        List<AdminDept> adminMenuList = adminDeptService.findDeptTreeList();
+//        AdminMenu menu = new AdminMenu();
+//        menu.setMenuId(0);
+//        menu.setName("全公司");
+//        menu.setPid(-1);
+//        menu.setType(MenuType.MENU);
+//        menu.setOpen(true);
+//        adminMenuList.add(menu);
+        return R.ok().put("deptList",adminMenuList);
     }
 }

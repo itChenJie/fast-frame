@@ -62,4 +62,15 @@ public class AdminDeptServiceImpl extends ServiceImpl<AdminDeptMapper, AdminDept
         }
         return adminDept.orElse(null);
     }
+
+    /**
+     * 查询部门树
+     *
+     * @return
+     */
+    @Override
+    public List<AdminDept> findDeptTreeList() {
+        List<AdminDept> adminDepts = list();
+        return null;
+    }
 }

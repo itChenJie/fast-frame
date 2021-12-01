@@ -23,11 +23,4 @@ public class Application {
         SnowFlakeUtils.init(SnowFlakeUtils.getDataCenterId(),SnowFlakeUtils.getWorkId());
         SpringApplication.run(Application.class, args);
     }
-
-    int info=1;
-    @Scheduled(fixedRate = 1000)
-    public void outputLogger(){
-        logger.info("测试日志输出"+info++);
-    }
-
 }

@@ -95,24 +95,13 @@ public class DistributeLockAspect {
         String keyPrefix = distributeLock.lockKeyPrefix();
         String businessCode = distributeLock.businessCode();
         String keyName = "";
-        String ukString = null;
+        String ukString = "";
         if (distributeLock.lockFiled()>-1){
             Object[] args = joinPoint.getArgs();
             ukString = args[distributeLock.lockFiled()].toString();
         }
-        if (StringUtils.isNotBlank(keyPrefix)&&StringUtils.isNotBlank(businessCode)){
-            keyName = keyPrefix+":"+businessCode;
-        }else if (StringUtils.isNotBlank(keyPrefix)){
-            keyName = keyPrefix;
-        }else if(StringUtils.isNotBlank(businessCode)){
-            keyName = businessCode;
-        }else {
-            String name = joinPoint.getTarget().getClass().getName();
-            String methodName = joinPoint.getSignature().getName();
-            keyName = name+methodName;
-        }
         if (StringUtils.isNotBlank(ukString)){
-            CollectionUtil.join(Arrays.asList(keyName, ukString,SnowFlakeUtils.nextId()),":");
+            CollectionUtil.join(Arrays.asList(keyPrefix,businessCode, ukString,SnowFlakeUtils.nextId()),":");
         }
         return keyName;
     }
