@@ -4,6 +4,13 @@ server:
     name: fast-frame
   servlet:
     context-path: /fast-frame
+spring:
+  cloud:
+    sentinel:
+      transport:
+        dashboard: localhost:8858
+  application:
+    name: fast-frame
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
