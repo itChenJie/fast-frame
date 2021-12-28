@@ -1,6 +1,7 @@
 package com.admin.service;
 
 import com.admin.enums.UserStatusEnum;
+import com.admin.query.AdminUserQuery;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.admin.entity.AdminUser;
@@ -21,10 +22,10 @@ import java.util.Map;
 public interface IAdminUserService extends IService<AdminUser> {
     /**
     * 分页查询
-    * @param params
+    * @param query
     * @return
     */
-    PageUtils queryPage(Map<String, Object> params);
+    PageUtils queryPage(AdminUserQuery query);
 
     /**
     * 添加

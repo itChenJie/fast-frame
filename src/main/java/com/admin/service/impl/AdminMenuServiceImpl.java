@@ -2,20 +2,20 @@ package com.admin.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
-import com.admin.entity.AdminMenu;
 import com.admin.dao.AdminMenuMapper;
+import com.admin.entity.AdminMenu;
 import com.admin.enums.MenuType;
+import com.admin.query.AdminMenuQuery;
 import com.admin.service.IAdminMenuService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.basis.framework.page.PageUtils;
+import org.basis.framework.query.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import org.basis.framework.page.PageUtils;
-import org.basis.framework.page.Query;
-import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * 菜单 服务实现类
@@ -24,16 +24,13 @@ import java.util.*;
  * @since 2021-07-04
  */
 @Service(value="adminMenuService")
-public class AdminMenuServiceImpl extends ServiceImpl<AdminMenuMapper, AdminMenu>  implements IAdminMenuService  {
+public class AdminMenuServiceImpl extends BaseServiceImpl<AdminMenuMapper, AdminMenu> implements IAdminMenuService  {
     @Autowired
     private AdminMenuMapper adminMenuMapper;
 
     @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        IPage<AdminMenu> page = this.page(
-        new Query<AdminMenu>().getPage(params),
-        new QueryWrapper<AdminMenu>()
-            );
+    public PageUtils queryPage(AdminMenuQuery query) {
+        IPage<AdminMenu> page = this.getPageList(query);
         return new PageUtils(page);
     }
 

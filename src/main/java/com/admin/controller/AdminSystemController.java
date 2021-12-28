@@ -3,6 +3,7 @@ package com.admin.controller;
 import com.admin.service.IAdminCaptchaService;
 import com.admin.service.IAdminUserService;
 import com.admin.vo.LoginVo;
+import com.common.annotation.Log;
 import com.common.base.AbstractController;
 import com.common.base.BaseUtil;
 import io.swagger.annotations.ApiImplicitParam;
@@ -28,6 +29,7 @@ import java.io.IOException;
  * @Author ChenWenJie
  * @Data 2021/10/28 2:59 下午
  **/
+@Log
 @RestController
 public class AdminSystemController extends AbstractController {
     @Autowired

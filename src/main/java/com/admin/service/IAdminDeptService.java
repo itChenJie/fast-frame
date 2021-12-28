@@ -1,6 +1,7 @@
 package com.admin.service;
 
 import com.admin.entity.AdminDept;
+import com.admin.query.AdminDeptQuery;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.basis.framework.page.PageUtils;
 
@@ -18,10 +19,10 @@ import java.util.Map;
 public interface IAdminDeptService extends IService<AdminDept> {
     /**
     * 分页查询
-    * @param params
+    * @param query
     * @return
     */
-    PageUtils queryPage(Map<String, Object> params);
+    PageUtils queryPage(AdminDeptQuery query);
 
     /**
     * 添加
@@ -52,5 +53,12 @@ public interface IAdminDeptService extends IService<AdminDept> {
      * 查询部门树
      * @return
      */
-    List<AdminDept> findDeptTreeList();
+    List<AdminDept> findDeptTreeList(Integer deptId);
+
+    /**
+     * 查询所有
+     * @param query
+     * @return
+     */
+    List<AdminDept> findAll(AdminDeptQuery query);
 }

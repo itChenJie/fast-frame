@@ -3,6 +3,7 @@ package com.admin.controller;
 
 import com.admin.entity.AdminUser;
 import com.admin.enums.UserStatusEnum;
+import com.admin.query.AdminUserQuery;
 import com.admin.service.IAdminUserService;
 import com.common.base.AbstractController;
 import io.swagger.annotations.Api;
@@ -45,8 +46,8 @@ public class AdminUserController extends AbstractController {
     })
     @PostMapping("/list")
     @Permissions("user:list")
-    public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = adminUserService.queryPage(params);
+    public R list(@RequestBody AdminUserQuery query){
+        PageUtils page = adminUserService.queryPage(query);
         return R.ok().put("page", page);
     }
 

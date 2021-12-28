@@ -50,5 +50,5 @@ public class AdminDept extends BaseTimeEntity  implements Serializable {
     private List<AdminUser> adminUsers;
 
     @TableField(exist=false)
-    private List<?> list;
+    private List<AdminDept> node;
 }

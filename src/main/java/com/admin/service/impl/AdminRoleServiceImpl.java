@@ -1,19 +1,18 @@
 package com.admin.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
+import com.admin.dao.AdminRoleMapper;
 import com.admin.entity.AdminMenu;
 import com.admin.entity.AdminRole;
-import com.admin.dao.AdminRoleMapper;
+import com.admin.query.AdminRoleQuery;
 import com.admin.service.IAdminMenuService;
 import com.admin.service.IAdminRoleService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.basis.framework.page.PageUtils;
+import org.basis.framework.query.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import org.basis.framework.page.PageUtils;
-import org.basis.framework.page.Query;
 import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -25,34 +24,30 @@ import java.util.stream.Collectors;
  * @since 2021-07-04
  */
 @Service(value="adminRoleService")
-public class AdminRoleServiceImpl extends ServiceImpl<AdminRoleMapper, AdminRole>  implements IAdminRoleService  {
+public class AdminRoleServiceImpl extends BaseServiceImpl<AdminRoleMapper, AdminRole> implements IAdminRoleService  {
     @Autowired
     AdminRoleMapper adminRoleMapper;
     @Autowired
     IAdminMenuService adminMenuService;
 
     @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        IPage<AdminRole> page = this.page(
-        new Query<AdminRole>().getPage(params),
-        new QueryWrapper<AdminRole>()
-            );
+    public PageUtils queryPage(AdminRoleQuery query) {
+        IPage<AdminRole> page = this.getPageList(query);
         return new PageUtils(page);
     }
 
     @Override
     public void addAdminRole(AdminRole adminRole) {
-        save(adminRole);
+        create(adminRole);
     }
 
     @Override
     public void updateAdminRole(AdminRole adminRole) {
-        updateById(adminRole);
+        update(adminRole);
     }
 
     @Override
-    public void deleteAdminRole(Collection<? extends Serializable> idList) {
-        removeByIds(idList);
+    public void deleteAdminRole(Collection<? extends Serializable> idList) { deleteByIds(idList);
     }
 
     @Override

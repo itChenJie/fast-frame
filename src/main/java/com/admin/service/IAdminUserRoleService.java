@@ -1,6 +1,7 @@
 package com.admin.service;
 
 import com.admin.entity.AdminUserRole;
+import com.admin.query.AdminUserRoleQuery;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.basis.framework.page.PageUtils;
 import java.io.Serializable;
@@ -16,10 +17,10 @@ import java.util.Map;
 public interface IAdminUserRoleService extends IService<AdminUserRole> {
     /**
     * 分页查询
-    * @param params
+    * @param query
     * @return
     */
-    PageUtils queryPage(Map<String, Object> params);
+    PageUtils queryPage(AdminUserRoleQuery query);
 
     /**
     * 添加

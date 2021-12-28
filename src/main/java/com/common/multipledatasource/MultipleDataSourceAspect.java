@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
 @Component
 public class MultipleDataSourceAspect {
 
-    @Pointcut(value = "@annotation(com.common.multipledatasource.MultipleDataSource)")
+    @Pointcut("@annotation(MultipleDataSource)||@within(MultipleDataSource)")
     private void pointcut(){}
 
     @Around("pointcut()")

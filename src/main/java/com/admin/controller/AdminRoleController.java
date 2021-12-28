@@ -1,6 +1,7 @@
 package com.admin.controller;
 
 
+import com.admin.query.AdminRoleQuery;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,8 +33,8 @@ public class AdminRoleController {
     */
     @ApiOperation(value = "列表查询")
     @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = adminRoleService.queryPage(params);
+    public R list(@RequestBody AdminRoleQuery query){
+        PageUtils page = adminRoleService.queryPage(query);
         return R.ok().put("page", page);
     }
     /**

@@ -72,15 +72,22 @@ public class DistributeLockAspect {
     private boolean getLock(RLock rLock, DistributeLock distributeLock) throws InterruptedException {
         long waitTime = distributeLock.waitTime();
         long leaseTime = distributeLock.leaseTime();
-        boolean result;
-        if (waitTime>0&&leaseTime>0){
-            result = rLock.tryLock(waitTime,leaseTime, TimeUnit.MICROSECONDS);
-        }else if (leaseTime>0){
-            result = rLock.tryLock(0,leaseTime,TimeUnit.MILLISECONDS);
-        }else if (waitTime>0){
-            result = rLock.tryLock(waitTime,TimeUnit.MILLISECONDS);
-        }else {
-            result = rLock.tryLock();
+        boolean result = false;
+        int count = 1;
+        while (!result){
+            if (waitTime>0&&leaseTime>0){
+                result = rLock.tryLock(waitTime,leaseTime, TimeUnit.MICROSECONDS);
+            }else if (leaseTime>0){
+                result = rLock.tryLock(0,leaseTime,TimeUnit.MILLISECONDS);
+            }else if (waitTime>0){
+                result = rLock.tryLock(waitTime,TimeUnit.MILLISECONDS);
+            }else {
+                result = rLock.tryLock();
+            }
+            count++;
+            if (count>distributeLock.tryCount())
+                throw new RRException("获取分布式锁失败！");
+
         }
         return result;
     }

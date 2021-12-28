@@ -6,6 +6,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.basis.framework.entity.BaseEntity;
+import org.basis.framework.entity.BaseTimeEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -48,6 +49,9 @@ public class SqlSaveAndUpdateContentFillingAspect {
                     BaseEntity baseEntity = (BaseEntity) arg;
                     baseEntity.setCreateUserId(BaseUtil.getUserId());
                     baseEntity.setCreateTime(new Date());
+                }else if(arg instanceof BaseTimeEntity ){
+                    BaseTimeEntity baseTimeEntity = (BaseTimeEntity) arg;
+                    baseTimeEntity.setCreateTime(new Date());
                 }
             }
         }
@@ -65,6 +69,9 @@ public class SqlSaveAndUpdateContentFillingAspect {
                     BaseEntity baseEntity = (BaseEntity) arg;
                     baseEntity.setUpdateUserId(BaseUtil.getUserId());
                     baseEntity.setUpdateTime(new Date());
+                }else if(arg instanceof BaseTimeEntity ){
+                    BaseTimeEntity baseTimeEntity = (BaseTimeEntity) arg;
+                    baseTimeEntity.setUpdateTime(new Date());
                 }
             }
         }
