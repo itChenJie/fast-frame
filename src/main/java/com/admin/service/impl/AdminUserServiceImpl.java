@@ -7,19 +7,18 @@ import com.admin.entity.AdminDept;
 import com.admin.entity.AdminRole;
 import com.admin.entity.AdminUser;
 import com.admin.enums.UserStatusEnum;
+import com.admin.query.AdminUserQuery;
 import com.admin.service.IAdminDeptService;
 import com.admin.service.IAdminRoleService;
 import com.admin.service.IAdminUserService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.common.base.BaseUtil;
 import com.utils.HttpContextUtils;
 import com.utils.RedisUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.basis.framework.error.RRException;
 import org.basis.framework.page.PageUtils;
-import org.basis.framework.page.Query;
+import org.basis.framework.query.BaseServiceImpl;
 import org.basis.framework.utils.MD5Util;
 import org.basis.framework.utils.R;
 import org.basis.framework.utils.TokenGenerator;
@@ -30,7 +29,6 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -40,7 +38,7 @@ import java.util.Optional;
  * @since 2021-07-04
  */
 @Service(value="adminUserService")
-public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser>  implements IAdminUserService  {
+public class AdminUserServiceImpl extends BaseServiceImpl<AdminUserMapper, AdminUser> implements IAdminUserService  {
     @Autowired
     private AdminUserMapper adminUserMapper;
     @Autowired
@@ -52,11 +50,8 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
     //12小时后过期
     private final static int LOGINEXPIRE = 3600 * 3;
     @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        IPage<AdminUser> page = this.page(
-        new Query<AdminUser>().getPage(params),
-        new QueryWrapper<AdminUser>()
-            );
+    public PageUtils queryPage(AdminUserQuery query) {
+        IPage<AdminUser> page = this.getPageList(query);
         List<AdminUser> records = page.getRecords();
         if (CollectionUtil.isNotEmpty(records)){
             for (AdminUser adminUser : records) {
@@ -88,7 +83,7 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
 
     @Override
     public void deleteAdminUser(Collection<? extends Serializable> idList) {
-        removeByIds(idList);
+        deleteByIds(idList);
     }
 
     @Override

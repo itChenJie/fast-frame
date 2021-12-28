@@ -1,6 +1,7 @@
 package com.admin.service;
 
 import com.admin.entity.AdminMenu;
+import com.admin.query.AdminMenuQuery;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.basis.framework.page.PageUtils;
 import java.io.Serializable;
@@ -17,10 +18,10 @@ import java.util.Map;
 public interface IAdminMenuService extends IService<AdminMenu> {
     /**
     * 分页查询
-    * @param params
+    * @param
     * @return
     */
-    PageUtils queryPage(Map<String, Object> params);
+    PageUtils queryPage(AdminMenuQuery query);
 
     /**
     * 添加

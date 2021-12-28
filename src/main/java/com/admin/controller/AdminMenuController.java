@@ -3,6 +3,7 @@ package com.admin.controller;
 
 import com.admin.entity.AdminMenu;
 import com.admin.enums.MenuType;
+import com.admin.query.AdminMenuQuery;
 import com.admin.service.IAdminMenuService;
 import com.admin.service.IAdminRoleService;
 import com.common.base.AbstractController;
@@ -36,9 +37,9 @@ public class AdminMenuController extends AbstractController {
     * 列表
     */
     @ApiOperation(value = "列表查询")
-    @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = adminMenuService.queryPage(params);
+    @GetMapping("/list")
+    public R list(AdminMenuQuery query){
+        PageUtils page = adminMenuService.queryPage(query);
         return R.ok().put("page", page);
     }
     /**

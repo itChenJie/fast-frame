@@ -1,21 +1,20 @@
 package com.admin.controller;
 
 
+import com.admin.entity.AdminDept;
 import com.admin.entity.AdminMenu;
 import com.admin.enums.MenuType;
-import org.springframework.web.bind.annotation.*;
+import com.admin.query.AdminDeptQuery;
+import com.admin.service.IAdminDeptService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.beans.factory.annotation.Autowired;
-import com.admin.service.IAdminDeptService;
-import com.admin.entity.AdminDept;
-
 import org.basis.framework.page.PageUtils;
 import org.basis.framework.utils.R;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 部门
@@ -34,9 +33,9 @@ public class AdminDeptController {
     * 列表
     */
     @ApiOperation(value = "列表查询")
-    @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = adminDeptService.queryPage(params);
+    @GetMapping("/list")
+    public R list(AdminDeptQuery query){
+        PageUtils page = adminDeptService.queryPage(query);
         return R.ok().put("page", page);
     }
     /**
@@ -47,8 +46,9 @@ public class AdminDeptController {
     */
     @ApiOperation("新增部门信息")
     @PostMapping("/add")
-    public void addAdminDept(@RequestBody AdminDept adminDept) {
+    public R addAdminDept(@RequestBody AdminDept adminDept) {
         adminDeptService.addAdminDept(adminDept);
+        return R.ok();
     }
     /**
     * 更新部门信息
@@ -83,16 +83,17 @@ public class AdminDeptController {
     }
 
     @ApiOperation("选择部门(添加、修改部门)")
+    @GetMapping("/tree")
+    public R tree(){
+        List<AdminDept> adminMenuList = adminDeptService.findDeptTreeList(0);
+        return R.ok().put("deptList",adminMenuList);
+    }
+
+    @ApiOperation("选择菜单(添加、修改菜单)")
     @GetMapping("/select")
     public R select(){
-        List<AdminDept> adminMenuList = adminDeptService.findDeptTreeList();
-//        AdminMenu menu = new AdminMenu();
-//        menu.setMenuId(0);
-//        menu.setName("全公司");
-//        menu.setPid(-1);
-//        menu.setType(MenuType.MENU);
-//        menu.setOpen(true);
-//        adminMenuList.add(menu);
-        return R.ok().put("deptList",adminMenuList);
+        AdminDeptQuery query = new AdminDeptQuery();
+        List<AdminDept> adminDeptList = adminDeptService.findAll(query);
+        return R.ok().put("deptList",adminDeptList);
     }
 }
