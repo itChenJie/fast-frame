@@ -6,10 +6,12 @@ import com.admin.vo.LoginVo;
 import com.common.annotation.Log;
 import com.common.base.AbstractController;
 import com.common.base.BaseUtil;
+import com.feignClient.AdminFeignServiceDemo;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.IOUtils;
 import org.basis.framework.annotation.IgnoreSecurity;
+import org.basis.framework.http.BaseResponse;
 import org.basis.framework.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -67,5 +69,18 @@ public class AdminSystemController extends AbstractController {
     public R  logout(HttpServletRequest request){
         adminUserService.logout(BaseUtil.getToken(request));
         return R.ok();
+    }
+
+    @Autowired
+    private AdminFeignServiceDemo feignServiceDemo;
+
+    @GetMapping("/remoteLogin")
+    @IgnoreSecurity
+    public void remoteLogin(){
+        LoginVo loginVo = new LoginVo();
+        loginVo.setAccount("15070158449");
+        loginVo.setPassword("123456");
+        BaseResponse baseResponse = feignServiceDemo.remoteLogin(loginVo);
+        System.out.println(baseResponse.getData());
     }
 }

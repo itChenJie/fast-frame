@@ -30,3 +30,21 @@ knife4j:
 logging:
   config: classpath:logback.xml
 weblogPath: ./logs/info.log
+
+## feign配置
+feign:
+  ## 是否开启okhttp
+  okhttp:
+    enabled: false
+  ## 使用Apache的httpclient的连接池
+  httpclient:
+    enabled: true
+    maxConnections: 20480
+    ## 每条路由的最大连接数
+    maxConnectionsPerRoute: 512
+    ## 生存时间
+    timeToLive: 60
+    connectionTimeout: 10000
+    userAgent: 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:37.0) Gecko/20100101 Firefox/37.0'
+  hystrix:
+    enabled: true

@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: naocs-service
+  profiles:
+      active: dev
+  cloud:
+    nacos:
+      config:
+        # 配置文件的环境
+        group: ${spring.profiles.active}
+        # 配置文件的格式
+        file-extension: yaml
+        # 配置中心的地址
+        server-addr: 127.0.0.1:8849
+        # 配置文件prefix
+        prefix: ${spring.application.name}
+        #命名空间
+        namespace: public
+      discovery:
+        server-addr: 127.0.0.1:8849
+        group: ${spring.profiles.active}
+        metadata:
+          preserved.heart.beat.interval: 1000 #心跳间隔。时间单位:毫秒。心跳间隔
+          preserved.heart.beat.timeout: 3000 #心跳暂停。时间单位:毫秒。 即服务端6秒收不到客户端心跳，会将该客户端注册的实例设为不健康：
+          preserved.ip.delete.timeout: 3000 #Ip删除超时。时间单位:毫秒。即服务端9秒收不到客户端心跳，会将该客户端注册的实例删除：
+        namespace: public
+  main:
+    allow-bean-definition-overriding: true
