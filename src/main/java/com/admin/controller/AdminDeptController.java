@@ -56,7 +56,7 @@ public class AdminDeptController {
     */
     @ApiOperation("更新部门信息")
     @PostMapping("/update")
-    public R updateAdminDept(AdminDept adminDept){
+    public R updateAdminDept(@RequestBody AdminDept adminDept){
         adminDeptService.updateAdminDept(adminDept);
         return R.ok();
     }
@@ -67,8 +67,8 @@ public class AdminDeptController {
     * @return
     */
     @ApiOperation("删除部门信息")
-    @PostMapping("/delete")
-    public R deleteAdminDept(@RequestBody Integer[] ids){
+    @GetMapping("/delete")
+    public R deleteAdminDept(Integer[] ids){
         adminDeptService.deleteAdminDept(Arrays.asList(ids));
         return R.ok();
     }
@@ -77,7 +77,7 @@ public class AdminDeptController {
     * 根据id查询
     */
     @ApiOperation("根据id根据id查询")
-    @PostMapping("/findById")
+    @GetMapping("/findById")
     public R findById(Integer id){
         return R.ok().put("data",adminDeptService.findById(id));
     }

@@ -20,39 +20,39 @@ public class AdminUserQuery extends Query<AdminUser> {
     private LambdaQueryWrapper<AdminUser> wrapper = Wrappers.lambdaQuery();
     private Long userId ;
     private String account;
-    private UserStatusEnum statusEnum;
+    private Integer status;
     private String mobile;
     private String userName;
     private Integer sex;
     private Integer deptId;
 
-    public void setUserId(Long userId) {
-       wrapper.eq(AdminUser::getUserId,userId);
-    }
-
-    public void setAccount(String account) {
-        wrapper.like(AdminUser::getAccount,account);
-    }
-
-    public void setStatusEnum(UserStatusEnum statusEnum) {
-       wrapper.eq(AdminUser::getStatus,statusEnum);
-    }
-
-    public void setMobile(String mobile) {
-       wrapper.like(AdminUser::getMobile,mobile);
-    }
-
-    public void setUserName(String userName) {
-        wrapper.like(AdminUser::getUserName,userName);
-    }
-
-    public void setSex(Integer sex) {
-        wrapper.eq(AdminUser::getSex,sex);
-    }
-
-    public void setDeptId(Integer deptId) {
-        wrapper.eq(AdminUser::getDept,deptId);
-    }
+//    public void setUserId(Long userId) {
+//       wrapper.eq(AdminUser::getUserId,userId);
+//    }
+//
+//    public void setAccount(String account) {
+//        wrapper.like(AdminUser::getAccount,account);
+//    }
+//
+//    public void setStatusEnum(UserStatusEnum statusEnum) {
+//       wrapper.eq(AdminUser::getStatus,statusEnum);
+//    }
+//
+//    public void setMobile(String mobile) {
+//       wrapper.like(AdminUser::getMobile,mobile);
+//    }
+//
+//    public void setUserName(String userName) {
+//        wrapper.like(AdminUser::getUserName,userName);
+//    }
+//
+//    public void setSex(Integer sex) {
+//        wrapper.eq(AdminUser::getSex,sex);
+//    }
+//
+//    public void setDeptId(Integer deptId) {
+//        wrapper.eq(AdminUser::getDept,deptId);
+//    }
 
     @Override
     public Wrapper<AdminUser> toWrapper() {
@@ -62,8 +62,8 @@ public class AdminUserQuery extends Query<AdminUser> {
         if (this.valid(account)) {
             wrapper.like(AdminUser::getAccount,account);
         }
-        if (this.valid(statusEnum)) {
-            wrapper.eq(AdminUser::getStatus,statusEnum);
+        if (this.valid(status)) {
+            wrapper.eq(AdminUser::getStatus,UserStatusEnum.valueOf(status));
         }
         if (this.valid(mobile)) {
             wrapper.like(AdminUser::getMobile,mobile);
@@ -75,7 +75,7 @@ public class AdminUserQuery extends Query<AdminUser> {
             wrapper.eq(AdminUser::getSex,sex);
         }
         if (this.valid(deptId)) {
-            wrapper.eq(AdminUser::getDept,deptId);
+            wrapper.eq(AdminUser::getDeptId,deptId);
         }
         return wrapper;
     }

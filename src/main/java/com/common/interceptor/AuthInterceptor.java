@@ -5,6 +5,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.common.base.BaseUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.basis.framework.annotation.Permissions;
+import org.basis.framework.error.BizCodeEnume;
+import org.basis.framework.error.ServiceException;
+import org.basis.framework.error.UnauthorizedException;
 import org.basis.framework.utils.R;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.method.HandlerMethod;
@@ -44,9 +47,8 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
                 }
             }
             if(!isRelease){
-                response.setCharacterEncoding("UTF-8");
-                response.getWriter().write(JSONObject.toJSONString(R.error("无权访问")));
-                return false;
+//                response.setCharacterEncoding("UTF-8");
+                throw new ServiceException("无权访问！", BizCodeEnume.PERMISSIONS.getCode());
             }
         }
         return true;

@@ -10,9 +10,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang3.StringUtils;
 import org.basis.framework.annotation.IgnoreSecurity;
-import org.basis.framework.annotation.Permissions;
 import org.basis.framework.page.PageUtils;
 import org.basis.framework.utils.R;
 import org.basis.framework.validation.group.UpdateGroup;
@@ -23,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Arrays;
-import java.util.Map;
 
 /**
  * 用户
@@ -44,9 +41,9 @@ public class AdminUserController extends AbstractController {
             @ApiImplicitParam(paramType="query", name = "page", value = "page",dataTypeClass=Integer.class),
             @ApiImplicitParam(paramType="query", name = "limit", value = "limit",dataTypeClass=Integer.class)
     })
-    @PostMapping("/list")
-    @Permissions("user:list")
-    public R list(@RequestBody AdminUserQuery query){
+    @GetMapping("/list")
+//    @Permissions("user:list")
+    public R list(AdminUserQuery query){
         PageUtils page = adminUserService.queryPage(query);
         return R.ok().put("page", page);
     }

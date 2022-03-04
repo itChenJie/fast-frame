@@ -1,14 +1,14 @@
 spring:
   datasource:
     username: root
-    password: root
-    url: jdbc:mysql://127.0.0.1:3306/fast_oms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+    password: 8hRLAw_t.e
+    url: jdbc:mysql://175.24.244.56:3306/fast_oms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.cj.jdbc.Driver
   redis:
     database: 0
-    host: 127.0.0.1
+    host: 175.24.244.56
     port: 6379
-    password: 123456
+    password: vx7HBrBj.D
     timeout: 7000ms # 连接超时时长（毫秒）
     jedis:
       pool:

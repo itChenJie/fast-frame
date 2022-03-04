@@ -23,6 +23,7 @@ import org.basis.framework.utils.MD5Util;
 import org.basis.framework.utils.R;
 import org.basis.framework.utils.TokenGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
@@ -43,12 +44,15 @@ public class AdminUserServiceImpl extends BaseServiceImpl<AdminUserMapper, Admin
     private AdminUserMapper adminUserMapper;
     @Autowired
     private RedisUtils redisUtils;
-    @Autowired
     private IAdminDeptService adminDeptService;
     @Autowired
     private IAdminRoleService adminRoleService;
     //12小时后过期
     private final static int LOGINEXPIRE = 3600 * 3;
+
+    public AdminUserServiceImpl(IAdminDeptService adminDeptService){
+        this.adminDeptService = adminDeptService;
+    }
     @Override
     public PageUtils queryPage(AdminUserQuery query) {
         IPage<AdminUser> page = this.getPageList(query);

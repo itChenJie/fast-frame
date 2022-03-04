@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.basis.framework.page.PageUtils;
 import org.basis.framework.query.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
@@ -27,8 +28,11 @@ import java.util.Optional;
  */
 @Service(value="adminDeptService")
 public class AdminDeptServiceImpl extends BaseServiceImpl<AdminDeptMapper, AdminDept> implements IAdminDeptService  {
-    @Autowired
     IAdminUserService adminUserService;
+
+    public AdminDeptServiceImpl(@Lazy IAdminUserService adminUserService){
+        this.adminUserService = adminUserService;
+    }
     @Override
     public PageUtils queryPage(AdminDeptQuery query) {
         IPage<AdminDept> page  = this.getPageList(query);
