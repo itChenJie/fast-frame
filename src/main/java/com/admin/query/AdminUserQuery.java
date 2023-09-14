@@ -25,35 +25,6 @@ public class AdminUserQuery extends Query<AdminUser> {
     private String userName;
     private Integer sex;
     private Integer deptId;
-
-//    public void setUserId(Long userId) {
-//       wrapper.eq(AdminUser::getUserId,userId);
-//    }
-//
-//    public void setAccount(String account) {
-//        wrapper.like(AdminUser::getAccount,account);
-//    }
-//
-//    public void setStatusEnum(UserStatusEnum statusEnum) {
-//       wrapper.eq(AdminUser::getStatus,statusEnum);
-//    }
-//
-//    public void setMobile(String mobile) {
-//       wrapper.like(AdminUser::getMobile,mobile);
-//    }
-//
-//    public void setUserName(String userName) {
-//        wrapper.like(AdminUser::getUserName,userName);
-//    }
-//
-//    public void setSex(Integer sex) {
-//        wrapper.eq(AdminUser::getSex,sex);
-//    }
-//
-//    public void setDeptId(Integer deptId) {
-//        wrapper.eq(AdminUser::getDept,deptId);
-//    }
-
     @Override
     public Wrapper<AdminUser> toWrapper() {
         if (this.valid(userId)){

@@ -11,11 +11,16 @@ import com.google.code.kaptcha.util.Config;
 import org.basis.framework.log.LoggerDisruptorQueue;
 import org.basis.framework.log.ProcessLogAppender;
 import org.basis.framework.message.bean.MessageAccount;
+import org.redisson.Redisson;
+import org.redisson.api.RedissonClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import java.util.Properties;
 
@@ -26,17 +31,30 @@ import java.util.Properties;
  **/
 @Configuration
 public class BeasBeanConfiguration {
-    @Value("spring.mail.username")
-    private String mailUsername;
-    @Value("spring.mail.password")
-    private String mailPassword;
+    @Autowired
+    private BeasProperties beasProperties;
     /**
      * 邮箱账号bean
      * @return
      */
     @Bean
     public MessageAccount messageAccount(){
-        return MessageAccount.builder().password(mailPassword).account(mailUsername).build();
+        BeasProperties.MailConfig mailConfig = beasProperties.getMail();
+        return MessageAccount.builder()
+                .password(mailConfig.getPassword())
+                .account(mailConfig.getUsername())
+                .build();
+    }
+
+    @Bean
+    public JavaMailSender javaMailSender() {
+        BeasProperties.MailConfig mailConfig = beasProperties.getMail();
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        mailSender.setHost(mailConfig.getHost());
+        mailSender.setPort(mailConfig.getPort());
+        mailSender.setUsername(mailConfig.getUsername());
+        mailSender.setPassword(mailConfig.getUsername());
+        return mailSender;
     }
 
     /**
@@ -100,5 +118,19 @@ public class BeasBeanConfiguration {
         ProcessLogAppender logAppender = new ProcessLogAppender();
         logAppender.init("CONSOLE");
         return logAppender;
+    }
+
+    /**
+     * Redisson Client
+     * @return
+     */
+    @Bean
+    public RedissonClient redissonClient(){
+        BeasProperties.RedissonConfig redissonConfig = beasProperties.getRedis();
+        org.redisson.config.Config config = new org.redisson.config.Config();
+        config.useSingleServer()
+                .setAddress(String.format("redis://%s:%s",redissonConfig.getHost(),redissonConfig.getPort()))
+                .setPassword(redissonConfig.getPassword());
+        return Redisson.create(config);
     }
 }
